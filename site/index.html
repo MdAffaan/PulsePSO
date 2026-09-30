@@ -1,0 +1,37 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>PulsePSO ICU Monitor - Simulated UI Demo</title>
+<style>
+*{box-sizing:border-box}body{margin:0;background:#0d0d0d;color:#e9e9e9;font-family:Inter,Arial,sans-serif;min-height:100vh;display:flex;align-items:center;justify-content:center;padding:24px}.app{width:min(1100px,100%);display:grid;grid-template-columns:1fr 360px;gap:24px}.panel{background:#171716;border:1px solid #343432;border-radius:14px;padding:18px;box-shadow:0 12px 40px #0008}.left h1{font:700 26px Georgia,serif;margin:0 0 4px}.muted{color:#a0a0a0;font-size:12px}.phone{width:360px;max-width:100%;margin:auto;border-radius:48px;padding:18px;background:#111;border:3px solid #777;box-shadow:0 0 0 3px #222,0 20px 60px #000}.screen{border:1px solid #555;border-radius:18px;padding:14px;background:rgba(20,20,20,.9)}.banner{font-size:11px;color:#e3b341;border:1px solid #6b5520;background:#2a2210;border-radius:8px;padding:7px 9px;margin-bottom:12px;line-height:1.4}.head{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px}.bed{font:600 14px Georgia,serif}.badge{font-size:10px;border:1px solid #6b5520;color:#e3b341;padding:5px 8px;border-radius:10px}.ecgbox{border:1px solid #666;border-radius:12px;padding:10px;margin-bottom:12px}.ecghead{display:flex;justify-content:space-between;color:#a0a0a0;font-size:10px;margin-bottom:5px}canvas{width:100%;height:105px;display:block;background:#0e0e0e;border-radius:7px}.legend{font-size:10px;color:#a0a0a0;margin-top:5px}.metric{border:1px solid #666;border-radius:7px;padding:12px;margin:9px 0}.label{font-size:10px;color:#a0a0a0;letter-spacing:1px}.value{font:700 26px 'Courier New',monospace;margin-top:3px}.sub{font-size:10px;color:#a0a0a0;margin-top:4px}.danger{color:#df4037}.fuzzy{border:1px solid #666;border-radius:7px;padding:12px;margin-top:9px}.bars{display:flex;gap:7px;margin:10px 0}.bar{height:34px;flex:1;border-radius:5px}.low{background:#24491f}.high{background:#54201d}.med{background:#4d401b}.barlabels{display:flex;gap:7px;font-size:9px;color:#a0a0a0;text-align:center}.barlabels span{flex:1}.controls h2{margin:0 0 14px;font:700 20px Georgia,serif}.controls p{font-size:13px;color:#b5b5b5;line-height:1.5}.btn{width:100%;padding:11px;border-radius:8px;border:1px solid #555;background:#252523;color:#eee;cursor:pointer;margin-top:8px}.btn:hover{background:#30302d}.btn:focus-visible{outline:2px solid #6e9f80;outline-offset:2px}.status{padding:10px;border-radius:8px;background:#101010;border:1px solid #333;margin:12px 0;font-size:12px}.row{display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid #292927}.row:last-child{border:0}.note{font-size:12px;color:#a0a0a0;line-height:1.45;margin-top:16px}@media(max-width:800px){.app{grid-template-columns:1fr}.controls{order:-1}.phone{width:360px}}
+</style></head>
+<body><main class="app"><section class="panel left"><h1>ICU Arrhythmia Monitor</h1><div class="muted">PulsePSO &bull; simulated UI demo (no real patient data)</div><div style="height:18px"></div><div class="phone"><div class="screen"><div class="banner">Simulated signal for UI demonstration only. Real results are in the README.</div><div class="head"><div><div class="bed">Bed 04 &middot; Simulated ECG</div><div class="muted" id="time">--:--:-- UTC</div></div><div class="badge">SIMULATED DEMO</div></div><div class="ecgbox"><div class="ecghead"><span>Simulated ECG (demo)</span><span>360 Hz</span></div><canvas id="ecg" width="640" height="210" role="img" aria-label="Simulated ECG waveform with red dots marking R-peaks. Illustration only."></canvas><div class="legend">Green line: simulated ECG &nbsp;&bull;&nbsp; Red dot: R-peak marker</div></div><div class="metric"><div class="label">HEART RATE (SIMULATED)</div><div class="value" id="hr">168 bpm</div></div><div class="metric"><div class="label">DANGER SCORE (EXAMPLE VALUE)</div><div class="value danger">91 / 100</div><div class="sub">Scale 0-100. Not computed from this waveform.</div></div><div class="metric"><div class="label">SIGNAL QUALITY</div><div class="value" id="quality">Simulated</div></div><div class="metric"><div class="label">ALERT LATENCY</div><div class="value">n/a</div><div class="sub">Measured in the Python pipeline, not in this demo.</div></div><div class="fuzzy"><div class="label">DANGER OVER LAST 5 WINDOWS (ILLUSTRATIVE)</div><div class="bars"><i class="bar low"></i><i class="bar high"></i><i class="bar high"></i><i class="bar med"></i><i class="bar high"></i></div><div class="barlabels"><span>LOW</span><span>HIGH</span><span>HIGH</span><span>MEDIUM</span><span>HIGH</span></div><div class="muted" style="margin-top:10px">Illustration of 3-second windows. Not real classifier output.</div></div></div></div></section>
+<section class="panel controls"><h2>PulsePSO demo</h2><p>This page runs entirely in your browser. There is <b>no Python, Node.js, npm, or server installation</b>.</p><div class="status"><div class="row"><span>Pipeline</span><b>Browser demo</b></div><div class="row"><span>Sampling rate</span><b>360 Hz</b></div><div class="row"><span>Real pipeline filter</span><b>0.5&ndash;40 Hz (causal)</b></div><div class="row"><span>R-peak markers</span><b>Simulated</b></div></div><button class="btn" id="run" type="button">Regenerate demo</button><button class="btn" id="pause" type="button">Pause waveform</button><p class="note"><b>Important:</b> this page only illustrates how an alert screen could look. The real Python pipeline (filter, Pan-Tompkins beat detection, fuzzy classifier, PSO tuning) runs separately, and its measured results are in the repository README. Nothing shown here is a clinical diagnosis.</p></section></main>
+<script>
+  [tool.vercel]
+entrypoint = "OptiForge.ipynb"
+
+const c=document.getElementById('ecg'),ctx=c.getContext('2d');let phase=0,paused=false,bpm=168;const N=900;
+function gauss(x,m,s){return Math.exp(-.5*((x-m)/s)**2)}
+function beat(t,hr){let b=60/hr;let x=((t%b)+b)%b;return .08*gauss(x,.12,.025)-.12*gauss(x,.20,.018)+1.25*gauss(x,.23,.010)-.25*gauss(x,.27,.014)+.25*gauss(x,.40,.055)}
+function draw(){
+  if(!paused){phase+=.012}
+  ctx.clearRect(0,0,c.width,c.height);ctx.fillStyle='#0e0e0e';ctx.fillRect(0,0,c.width,c.height);
+  ctx.strokeStyle='#252525';ctx.lineWidth=1;
+  for(let y=20;y<c.height;y+=35){ctx.beginPath();ctx.moveTo(0,y);ctx.lineTo(c.width,y);ctx.stroke()}
+  let pts=[];
+  for(let i=0;i<N;i++){let t=i/360+phase;pts.push(beat(t,bpm)+(.018*Math.sin(i*1.7)+.012*Math.sin(i*4.9)))}
+  ctx.beginPath();
+  pts.forEach((v,i)=>{let x=i/(N-1)*c.width,y=c.height/2-v*55;i?ctx.lineTo(x,y):ctx.moveTo(x,y)});
+  ctx.strokeStyle='#6e9f80';ctx.lineWidth=3;ctx.stroke();
+  const span=N/360,rr=60/bpm;
+  for(let k=-1;k<Math.ceil(span/rr)+2;k++){
+    let peakT=Math.floor(phase/rr)*rr+k*rr+.23;
+    let x=((peakT-phase)/span)*c.width;
+    if(x>=0&&x<=c.width){ctx.fillStyle='#c96a5e';ctx.beginPath();ctx.arc(x,c.height/2-1.25*55,5,0,Math.PI*2);ctx.fill()}
+  }
+  document.getElementById('time').textContent=new Date().toISOString().slice(11,19)+' UTC';
+  requestAnimationFrame(draw)
+}
+document.getElementById('run').onclick=()=>{bpm=160+Math.floor(Math.random()*18);document.getElementById('hr').textContent=bpm+' bpm'};
+document.getElementById('pause').onclick=()=>{paused=!paused;document.getElementById('pause').textContent=paused?'Resume waveform':'Pause waveform'};
+draw();
+</script></body></html>
